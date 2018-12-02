@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+
+<head>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 2px;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+        .inline { 
+        display: inline-block;
+        }
+        .buy { 
+          background-color: #11aa3f;
+        }
+        .sell { 
+          background-color: #e71111;
+        }
+        </style>
+  <title>Nifty 50</title>
+  <script src="libs/angular.min.js"></script>
+  <script src="controllers/nifty50.js"></script>
+ 
+</head>
+
+<body ng-app="myApp" ng-controller="WatchListController">
+  <h3>{{theTime}} AND {{theTenMinsTime}} ADVANCES: {{advances}} DECLINES: {{declines}}</h3>
+
+  <table  border="1">
+      <tr></tr>
+          <td style="font-weight:bold">Symbol</td>
+          <td style="font-weight:bold">6 Mins</td>
+          <td style="font-weight:bold">9 Mins</td>
+          <td style="font-weight:bold">12 Mins</td>
+          <td style="font-weight:bold">10 Mins</td>
+          <td style="font-weight:bold">15 Mins</td>
+          <td style="font-weight:bold">20 Mins</td>
+		  <td style="font-weight:bold">OHL</td> 
+		  <td style="font-weight:bold">Strong Move</td>
+      </tr>
+    <tr ng-repeat="x in history_List | orderBy:'symbol'">
+        <td>{{x.symbol}}</td>
+        <td>
+          <div class="inline"
+           ng-class="{buy: x.recom1==='BUYSIGNAL',
+            sell: x.recom1==='SELLSIGNAL'}">{{x.recom1}}</div>
+          <div ng-if="x.recom1==='BUYSIGNAL'" class="inline">{{x.recom1_buycount}}</div>
+          <div ng-if="x.recom1==='SELLSIGNAL'" class="inline">{{x.recom1_sellcount}}</div>
+        </td>
+        <td>  
+          <div class="inline" ng-class="{buy: x.recom2==='BUY',
+          sell: x.recom2==='SELL'}">{{x.recom2}}</div>
+          <div ng-if="x.recom2==='BUY'" class="inline">{{x.recom2_buycount}}</div>
+          <div ng-if="x.recom2==='SELL'" class="inline">{{x.recom2_sellcount}}</div>
+       </td>
+        <td> 
+          <div class="inline" ng-class="{buy: x.recom3==='STRONGBUY',
+          sell: x.recom3==='STRONGSELL'}">{{x.recom3}}</div>
+          <div ng-if="x.recom3==='STRONGBUY'" class="inline">{{x.recom3_buycount}}</div>
+          <div ng-if="x.recom3==='STRONGSELL'" class="inline">{{x.recom3_sellcount}}</div>
+      </td>
+      <td>
+        <div class="inline"
+         ng-class="{buy: x.recom4==='BUYSIGNAL',
+          sell: x.recom4==='SELLSIGNAL'}">{{x.recom4}}</div>
+       </td>
+      <td>  
+        <div class="inline" ng-class="{buy: x.recom5==='BUY',
+        sell: x.recom5==='SELL'}">{{x.recom5}}</div>
+       </td>
+      <td> 
+        <div class="inline" ng-class="{buy: x.recom6==='STRONGBUY',
+        sell: x.recom6==='STRONGSELL'}">{{x.recom6}}</div>
+           </td>
+		   <td> 
+        <div class="inline" ng-class="{buy: x.recom_OHL==='BUY',
+        sell: x.recom_OHL==='SELL'}">{{x.recom_OHL}}</div>
+           </td>
+		   <td> 
+        <div class="inline" ng-class="{buy: x.recom_bigMove==='BUY',
+        sell: x.recom_bigMove==='SELL'}">{{x.recom_bigMove}}({{x.recom_bigMovePer}}%)</div>
+           </td>
+    </tr>
+</table>
+  <!-- <div>
+      <ul ng-repeat="x in history_List">
+        <li>{{x.symbol}}--------{{x.recom1}}/{{x.recom2}}/{{x.recom3}}</li></ul>
+</div> -->
+</body>
+
+</html>

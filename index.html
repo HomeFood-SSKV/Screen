@@ -1,0 +1,304 @@
+<!doctype html>
+<html>
+
+<head>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 30px;
+
+        }
+        
+        td, th {
+            border: 1px solid gray;
+            text-align: left;
+            padding: 2px;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+        .inline { 
+        display: inline-block;
+        }
+        .buy { 
+          background-color: #11aa3f;
+        }
+        .sell { 
+          background-color: #e71111;
+        }
+        .blank_row
+        {
+            height: 10px !important; /* overwrites any other rules */
+            background-color: #FFFFFF;
+        }
+        .bull {   
+          color:#11aa3f;
+        }
+        .bear {  
+          color: #e71111;
+        }
+        .flat {  
+          color: blue;
+        }
+        span{ 
+          font-weight: bold;
+        }
+        </style>
+  <title>Screening</title>
+  <script src="libs/angular.min.js"></script>
+  <script src="controllers/Screening.js"></script>
+ 
+</head>
+
+<body ng-app="myApp" ng-controller="WatchListController">
+        <div>
+                <ul style=" font-size: 10px;" >
+                  <li>PreOpen Marker=<span ng-class="{bull: descriptionPre==='UP',
+                          bear: descriptionPre==='DOWN'}">{{descriptionPre}}</span>||
+                           Current Market=<span ng-class="{bull: descriptionCurrent==='UP',
+                           bear: descriptionCurrent==='DOWN'}">{{descriptionCurrent}}</span>||
+                            (Nifty50 & India VIX)=
+                            <span ng-class="{bull: descriptionIndiaVix==='UP',
+                            bear: descriptionIndiaVix==='DOWN',
+                            flat: descriptionIndiaVix==='FLAT'}">{{descriptionIndiaVix}}</span>||
+                           Major Index:  <span class="bull"> UP={{majorUpCount}}</span>, 
+                           <span class="bear">DOWN={{majorDownCount}}</span>||
+                           Top Stocks: <span class="bull">UP={{TopStockUpCount}}</span>,
+                           <span class="bear">DOWN={{TopStockDownCount}}</span>||
+                           6 Mins Start:<span style="font-weight:bold;color:blue">{{theTime}}</span>||
+                           Refresh:<span style="font-weight:bold;color:blue">{{refreshTime}}</span>
+                                                </li>
+                                                
+                                                <li style="float:left;">
+                                                    
+                           <span> <button style="font-weight:bold;float:right; font-size: 25px;"  ng-click="liveIndexWatch()"> 
+                                ((<span ng-class="{bull: descriptionPre==='UP',
+                            bear: descriptionPre==='DOWN'}">{{descriptionPre}}</span>||
+                             <span ng-class="{bull: descriptionCurrent==='UP',
+                             bear: descriptionCurrent==='DOWN'}">{{descriptionCurrent}}</span>||
+                              <span ng-class="{bull: descriptionIndiaVix==='UP',
+                              bear: descriptionIndiaVix==='DOWN',
+                              flat: descriptionIndiaVix==='FLAT'}">{{descriptionIndiaVix}}</span>||
+                             <span class="bull" ng-if=" majorUpCount>majorDownCount"> UP</span>
+                             <span class="bear" ng-if=" majorUpCount<majorDownCount"> DOWN</span>
+                             <span class="flat" ng-if=" majorUpCount==majorDownCount"> FLAT</span> ||
+                             <span class="bull" ng-if=" TopStockUpCount>TopStockDownCount"> UP</span>
+                             <span class="bear" ng-if=" TopStockUpCount<TopStockDownCount"> DOWN</span>
+                             <span class="flat" ng-if=" TopStockUpCount==TopStockDownCount"> FLAT</span>))
+                       </button></span>
+ 
+                                                </li>
+              </ul>
+          </div>
+    <table  border="1">
+        <tr>
+            <td style="font-weight:bold;color:blue">
+               </td>
+            <td style="font-weight:bold">Advances</td>
+            <td style="font-weight:bold">Declines</td>
+            <td style="font-weight:bold">NoChange</td>
+            <!-- <td style="font-weight:bold">Trend</td> -->
+        </tr>
+        <tr>
+            <td style="font-weight:bold">I.Pre Open Market:<span ng-class="{bull: descriptionPre==='UP',
+                bear: descriptionPre==='DOWN'}">{{descriptionPre}}</span></td>
+            <td >{{preOpenAdvances}}</td>
+            <td >{{preOpenDeclines}}</td>
+            <td >{{preOpenNoChange}}</td>
+            <!-- <td style="font-weight:bold"></td> -->
+        </tr>
+        <tr class="blank_row">
+            <td style="font-weight:bold" bgcolor="#FFFFFF" colspan="12"></td>
+        </tr>
+        <tr>
+            <td style="font-weight:bold">II.Current Market:<span ng-class="{bull: descriptionCurrent==='UP',
+                bear: descriptionCurrent==='DOWN'}">{{descriptionCurrent}}</span></td>
+            <td >{{advances}}</td>
+            <td >{{declines}}</td>
+            <td >{{noChange}}</td>
+            <!-- <td style="font-weight:bold"></td> -->
+        </tr>
+        </table>
+        <table  border="1">
+            <tr>
+                <td style="font-weight:bold">III.Index Name: <span ng-class="{bull: descriptionIndiaVix==='UP',
+                    bear: descriptionIndiaVix==='DOWN',
+                    flat: descriptionIndiaVix==='FLAT'}">{{descriptionIndiaVix}}</span></td>
+                <td style="font-weight:bold">% Change</td>
+                <td style="font-weight:bold">LTP</td>
+                <td style="font-weight:bold">Open</td>
+                <td style="font-weight:bold">High</td>
+                <td style="font-weight:bold">Low</td>
+                <!-- <td style="font-weight:bold">Trend</td> -->
+            </tr>
+            <tr>
+                <td>{{currentNiftyValues.indexName}}</td>
+                <td ng-class="{bull: currentNiftyValues.percChange>0,
+                        bear: currentNiftyValues.percChange<0}">{{currentNiftyValues.percChange}}</td>
+                <td>{{currentNiftyValues.last}}</td>
+                <td >{{currentNiftyValues.open}}</td>
+                <td >{{currentNiftyValues.high}}</td>
+                <td >{{currentNiftyValues.low}}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>{{currentIndiaVIXValues.indexName}}</td>
+                <td ng-class="{bull: currentIndiaVIXValues.percChange>0,
+                        bear: currentIndiaVIXValues.percChange<0}">{{currentIndiaVIXValues.percChange}}</td>
+                <td >{{currentIndiaVIXValues.last}}</td>
+                <td >{{currentIndiaVIXValues.open}}</td>
+                <td >{{currentIndiaVIXValues.high}}</td>
+                <td >{{currentIndiaVIXValues.low}}</td>
+                
+            </tr>
+            <tr class="blank_row">
+                <td style="font-weight:bold" bgcolor="#FFFFFF" colspan="12"></td>
+            </tr>
+            <tr class="blank_row">
+                <td style="font-weight:bold" bgcolor="#FFFFFF" colspan="12">IV. Major Indices:
+                        <span class="bull"> UP={{majorUpCount}}</span>, 
+                        <span class="bear">DOWN={{majorDownCount}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>{{currentNiftyBankValues.indexName}}</td>
+                <td ng-class="{bull: currentNiftyBankValues.percChange>0,
+                        bear: currentNiftyBankValues.percChange<0}">{{currentNiftyBankValues.percChange}}</td>
+                <td >{{currentNiftyBankValues.last}}</td>
+                <td >{{currentNiftyBankValues.open}}</td>
+                <td >{{currentNiftyBankValues.high}}</td>
+                <td >{{currentNiftyBankValues.low}}</td>
+               
+            </tr>
+            <tr>
+                <td>{{currentPSUValues.indexName}}</td>
+                <td ng-class="{bull: currentPSUValues.percChange>0,
+                        bear: currentPSUValues.percChange<0}">{{currentPSUValues.percChange}}</td>
+                <td >{{currentPSUValues.last}}</td>
+                <td >{{currentPSUValues.open}}</td>
+                <td >{{currentPSUValues.high}}</td>
+                <td >{{currentPSUValues.low}}</td>
+                
+            </tr>
+            <tr>
+                <td >{{currentFinServiceValues.indexName}}</td>
+                <td ng-class="{bull: currentFinServiceValues.percChange>0,
+                        bear: currentFinServiceValues.percChange<0}">{{currentFinServiceValues.percChange}}</td>
+                <td >{{currentFinServiceValues.last}}</td>
+                <td >{{currentFinServiceValues.open}}</td>
+                <td >{{currentFinServiceValues.high}}</td>
+                <td >{{currentFinServiceValues.low}}</td>
+                
+            </tr>
+            <tr>
+                <td >{{currentITValues.indexName}}</td>
+                <td ng-class="{bull: currentITValues.percChange>0,
+                        bear: currentITValues.percChange<0}">{{currentITValues.percChange}}</td>
+                <td >{{currentITValues.last}}</td>
+                <td >{{currentITValues.open}}</td>
+                <td >{{currentITValues.high}}</td>
+                <td >{{currentITValues.low}}</td>
+               
+            </tr>
+            <tr>
+                <td>{{currentAutoValues.indexName}}</td>
+                <td ng-class="{bull: currentAutoValues.percChange>0,
+                        bear: currentAutoValues.percChange<0}">{{currentAutoValues.percChange}}</td>
+                <td >{{currentAutoValues.last}}</td>
+                <td >{{currentAutoValues.open}}</td>
+                <td >{{currentAutoValues.high}}</td>
+                <td >{{currentAutoValues.low}}</td>
+                
+            </tr>
+            <tr class="blank_row">
+                <td>
+                    
+                </td>
+            </tr>
+            </table>
+  <table  border="1">
+      <tr></tr>
+          <td style="font-weight:bold">V.Stocks:
+              <span class="bull">UP={{TopStockUpCount}}</span>,
+            <span class="bear">DOWN={{TopStockDownCount}}</span></td>
+          <td style="font-weight:bold">% Change</td>
+          <td style="font-weight:bold">6 Mins</td>
+          <td style="font-weight:bold">9 Mins</td>
+          <td style="font-weight:bold">12 Mins</td>
+          <td style="font-weight:bold">10 Mins</td>
+          <td style="font-weight:bold">15 Mins</td>
+          <td style="font-weight:bold">20 Mins</td>
+		  <td style="font-weight:bold">OHL</td> 
+		  <td style="font-weight:bold">Strong Move</td>
+      </tr>
+    <tr ng-repeat="x in history_List | orderBy:'modifiedSymbol'">
+        <td ng-if="x.symbol!=='ADANIPORTS' && x.symbol!=='ASIANPAINT'">{{x.symbol}}</td>
+        <td ng-if="x.symbol==='ADANIPORTS'">Nifty</td>
+        <td ng-if="x.symbol==='ASIANPAINT'">Bank Nifty</td>
+        <td>
+            <div ng-class="{bull: x.per>0,
+                    bear: x.per<0}">{{x.per}}</div>
+          </td>
+        <td>
+          <div class="inline"
+           ng-class="{buy: x.recom1==='BUYSIGNAL',
+            sell: x.recom1==='SELLSIGNAL'}">{{x.recom1}}</div>
+          <div ng-if="x.recom1==='BUYSIGNAL'" class="inline">{{x.recom1_buycount}}</div>
+          <div ng-if="x.recom1==='SELLSIGNAL'" class="inline">{{x.recom1_sellcount}}</div>
+        </td>
+        <td>  
+          <div class="inline" ng-class="{buy: x.recom2==='BUY',
+          sell: x.recom2==='SELL'}">{{x.recom2}}</div>
+          <div ng-if="x.recom2==='BUY'" class="inline">{{x.recom2_buycount}}</div>
+          <div ng-if="x.recom2==='SELL'" class="inline">{{x.recom2_sellcount}}</div>
+       </td>
+        <td> 
+          <div class="inline" ng-class="{buy: x.recom3==='STRONGBUY',
+          sell: x.recom3==='STRONGSELL'}">{{x.recom3}}</div>
+          <div ng-if="x.recom3==='STRONGBUY'" class="inline">{{x.recom3_buycount}}</div>
+          <div ng-if="x.recom3==='STRONGSELL'" class="inline">{{x.recom3_sellcount}}</div>
+      </td>
+      <td>
+        <div class="inline"
+         ng-class="{buy: x.recom4==='BUYSIGNAL',
+          sell: x.recom4==='SELLSIGNAL'}">{{x.recom4}}</div>
+       </td>
+      <td>  
+        <div class="inline" ng-class="{buy: x.recom5==='BUY',
+        sell: x.recom5==='SELL'}">{{x.recom5}}</div>
+       </td>
+      <td> 
+        <div class="inline" ng-class="{buy: x.recom6==='STRONGBUY',
+        sell: x.recom6==='STRONGSELL'}">{{x.recom6}}</div>
+           </td>
+		   <td> 
+        <div class="inline" ng-class="{buy: x.recom_OHL==='BUY',
+        sell: x.recom_OHL==='SELL'}">{{x.recom_OHL}}</div>
+           </td>
+		   <td> 
+        <div class="inline" ng-class="{buy: x.recom_bigMove==='BUY',
+        sell: x.recom_bigMove==='SELL'}">{{x.recom_bigMove}}({{x.recom_bigMovePer}}%)</div>
+           </td>
+    </tr>
+</table>
+   <div><ul><li style="font-weight:bold;color:rgb(255, 0, 140); font-size: 10px;"><span>1.TREND 2.Follow Gain, Cut Loss(3,6,9,...mins) 3.Limited Trade </span>
+    ((<span ng-class="{bull: descriptionPre==='UP',
+    bear: descriptionPre==='DOWN'}">{{descriptionPre}}</span>||
+     <span ng-class="{bull: descriptionCurrent==='UP',
+     bear: descriptionCurrent==='DOWN'}">{{descriptionCurrent}}</span>||
+      <span ng-class="{bull: descriptionIndiaVix==='UP',
+      bear: descriptionIndiaVix==='DOWN',
+      flat: descriptionIndiaVix==='FLAT'}">{{descriptionIndiaVix}}</span>||
+     <span class="bull" ng-if=" majorUpCount>majorDownCount"> UP</span>
+     <span class="bear" ng-if=" majorUpCount<majorDownCount"> DOWN</span>
+     <span class="flat" ng-if=" majorUpCount==majorDownCount"> FLAT</span> ||
+     <span class="bull" ng-if=" TopStockUpCount>TopStockDownCount"> UP</span>
+     <span class="bear" ng-if=" TopStockUpCount<TopStockDownCount"> DOWN</span>
+     <span class="flat" ng-if=" TopStockUpCount==TopStockDownCount"> FLAT</span>))
+   <span> 4.Support & Resistance 5.BreakOut 6.Discipline 7.India VIX</span></li></ul></div> 
+</body>
+
+</html>
