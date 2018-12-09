@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+
+<head>
+     <title>Reference Sites</title>
+  <script src="libs/angular.min.js"></script>
+ <script>
+ angular.module('mySites', [])
+    .controller('MySitesController', ['$scope','$sce', function($scope,$sce) {
+        $scope.url = $sce.trustAsResourceUrl('http://pasivaraj.0fees.net/nse/Screening.html');
+        $scope.changeUrl=function(context){
+            switch (context) {
+                    case 'MONETCONTROL':
+                    $scope.url = $sce.trustAsResourceUrl('https://www.moneycontrol.com/stocksmarketsindia/');
+                    break;
+                    case 'SGXNIFTY':
+                    $scope.url = $sce.trustAsResourceUrl('https://sgxnifty.org/');
+                    break;
+                    case 'NSE':
+                    $scope.url = $sce.trustAsResourceUrl('https://www.nseindia.com/');
+                    break;
+                    case 'BSE':
+                    $scope.url = $sce.trustAsResourceUrl('https://beta.bseindia.com/sensex/code/16/');
+                    break;
+                    case 'PREOPENMARKET':
+                    $scope.url = $sce.trustAsResourceUrl('https://www.nseindia.com/live_market/dynaContent/live_watch/pre_open_market/pre_open_market.htm');
+                    break;
+                    case 'BLOOMBERG':
+                    $scope.url = $sce.trustAsResourceUrl('https://www.bloombergquint.com/markets/option-chain/put-call-ratio');
+                    break;
+                    case 'INVESTING':
+                    $scope.url = $sce.trustAsResourceUrl('https://in.investing.com/indices/india-indices');
+                     break;
+                     case 'SCREENING':
+                    $scope.url = $sce.trustAsResourceUrl('http://pasivaraj.0fees.net/nse/Screening.html');
+                    break;
+                    case 'FOREX':
+                    $scope.url = $sce.trustAsResourceUrl('https://economictimes.indiatimes.com/markets/forex');
+                    break;
+                    case 'COMMODITIES':
+                    $scope.url = $sce.trustAsResourceUrl('https://economictimes.indiatimes.com/commoditysummary/symbol-CRUDEOILM.cms');
+                     break;
+                }
+		}
+      
+    }]);
+ </script>
+</head>
+
+<body ng-app="mySites"> 
+        <section ng-controller="MySitesController" style="height:500px">
+            <h3>Pre Open Market</h3>
+                <a href="https://sgxnifty.org/">SGX Nifty/ Pre Open Market</a><br>
+                <a href="https://www.nseindia.com/live_market/dynaContent/live_watch/pre_open_market/pre_open_market.htm">NSE/ PREOPEN MARKET</a><br>
+                
+                <h3>Global Market</h3>
+                <a href="https://www.moneycontrol.com/stocksmarketsindia/">MoneyControl/Global market</a><br>
+                <a href="https://sgxnifty.org/world-markets/">SGX Nifty/Global market</a>
+                <h3>Market Trend</h3>
+                <a href="https://www.bloombergquint.com/markets/option-chain/put-call-ratio">bloomberg/Put Call Ratio</a><br>
+                <br>
+                <h3>Commodities and Forex Market</h3>
+                <a href="https://economictimes.indiatimes.com/commoditysummary/symbol-CRUDEOILM.cms">Economic Times/Commodities</a><br>
+                <a href="https://economictimes.indiatimes.com/markets/forex">Economic Times/forex </a><br>
+                <h3> Market Analyzer</h3>
+                <a href="http://pasivaraj.0fees.net/nse/Screening.html">Screening</a><br>
+                <a href="http://pasivaraj.0fees.net/nse/Nifty50.html">Nifty 50</a><br>
+                <a href="http://pasivaraj.0fees.net/nse/NiftyNext50.html">Nifty Next 50</a><br>
+                <a href="http://pasivaraj.0fees.net/nse/NiftyMidcap50.html">Nifty Midcap 50</a><br>
+                <h3> Index and General Link</h3>
+                <a href="https://www.nseindia.com/">NSE</a><br>
+                <a href="https://beta.bseindia.com/sensex/code/16/">BSE</a><br>
+                <a href="https://in.investing.com/indices/india-indices">Investing</a><br>
+<!--               
+         <iframe ng-src="{{url}}" style="width: 100%; height: 580px" frameborder="0" allowfullscren="allowfullscren"></iframe>
+          -->
+    </section>
+</body>
+
+</html>
