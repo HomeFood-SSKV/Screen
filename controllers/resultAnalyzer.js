@@ -70,7 +70,7 @@ var myApp = angular.module('myApp', []);
   $scope.removeComma($scope.sampleData);
   }
   $scope.removeComma=function(data){
-    $scope.hightlow = [];
+  $scope.hightlow = [];
   angular.forEach(data, function(value, key) {
    data[key].openprice=value.openprice.replace(',','');
    data[key].highprice=value.highprice.replace(',','');
@@ -89,27 +89,42 @@ var myApp = angular.module('myApp', []);
   $scope.calculateIndicator=function(data){
    var difference=[];
     var total=0;
+    var gainloss=0;
+    var fluctuation=0;
     var symbol='';
+    var ltp=0;
     angular.forEach(data, function(value, key) {
     var dataObj={
       "open":data[key].openprice,
       "close":data[key].closeprice,
       "high":data[key].highprice,
       "low":data[key].lowprice,
-      "difference":data[key].closeprice-data[key].openprice
+      "difference":data[key].closeprice-data[key].openprice,
+      "percentageDifference":Math.round(Math.abs(data[key].closeprice-data[key].openprice))+"%",
+      "roundPrice":Math.round(data[key].closeprice-data[key].openprice)
     };
+    if(ltp===0){
+        ltp=data[key].lasttradedprice;
+    }
     total=total+Math.abs(data[key].closeprice-data[key].openprice);
+    gainloss=gainloss+(data[key].closeprice-data[key].openprice);
+    fluctuation=Math.max.apply(Math, $scope.hightlow)-Math.min.apply(Math, $scope.hightlow);
     symbol=data[key].symbol;
     difference.push(dataObj);
   }); 
   var resultObj={
     "symbol":symbol,
     "total":total,
+    "percentageTotal":Math.round(Math.abs(total))+"%",
     "weekhigh":Math.max.apply(Math, $scope.hightlow),
     "weeklow":Math.min.apply(Math, $scope.hightlow),
+    "gainloss":Math.round(gainloss),
+    "fluctuation":Math.round(fluctuation),
+    "ltp":ltp,
     "data":difference
   }
-  $scope.result=resultObj;
+  $scope.result=[];
+  $scope.result.push(resultObj);
   console.log("result",$scope.result);
   console.log("total",total);
     }
