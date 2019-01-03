@@ -73,8 +73,8 @@
           <th>Result Date</th>
         </tr>
         <tr ng-repeat="x in result ">
-           <td width="10%">NA</td> <!-- {{x.symbol}} -->
-          <td width="30%"> <ul  ng-style="{'width': x.percentageTotal}">
+           <td width="10%">{{x.symbol}}</td> <!--  -->
+          <td width="30%"> <ul  style="width:100%">
                 <li ng-repeat="col in x.data | orderBy:'+':true"
                  style=" float: left;
                         list-style-type: none;" 

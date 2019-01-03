@@ -3,6 +3,8 @@ var myApp = angular.module('myApp', []);
 
   myApp.controller('resultController', [ '$scope','$interval','$rootScope', '$http',
   function ($scope,$interval,$rootScope,$http) {
+    $scope.symbolCollection=['TCS','SUNPHARMA'];
+    $scope.result=[];
      $scope.sampleData=[
       {
           "date": "02-Jan-2019",
@@ -63,7 +65,67 @@ var myApp = angular.module('myApp', []);
           "closeprice": "1908.95",
           "totaltradedquantity": "4968201",
           "turnover(inlakhs)": "95411.46"
-      }
+      },
+      {
+        "date": "03-Jan-2019",
+        "symbol": "SUNPHARMA",
+        "series": "EQ",
+        "openprice": "442.05",
+        "highprice": "443.60",
+        "lowprice": "434.00",
+        "lasttradedprice": "434.90",
+        "closeprice": "436.10",
+        "totaltradedquantity": "94",
+        "turnover(inlakhs)": "79"
+    },
+    {
+        "date": "02-Jan-2019",
+        "symbol": "SUNPHARMA",
+        "series": "EQ",
+        "openprice": "430.50",
+        "highprice": "441.20",
+        "lowprice": "429.25",
+        "lasttradedprice": "439.95",
+        "closeprice": "440.05",
+        "totaltradedquantity": "96",
+        "turnover(inlakhs)": "56"
+    },
+    {
+        "date": "01-Jan-2019",
+        "symbol": "SUNPHARMA",
+        "series": "EQ",
+        "openprice": "432.50",
+        "highprice": "438.80",
+        "lowprice": "429.65",
+        "lasttradedprice": "432.70",
+        "closeprice": "433.55",
+        "totaltradedquantity": "84",
+        "turnover(inlakhs)": "87"
+    },
+    {
+        "date": "31-Dec-2018",
+        "symbol": "SUNPHARMA",
+        "series": "EQ",
+        "openprice": "428.10",
+        "highprice": "432.30",
+        "lowprice": "425.50",
+        "lasttradedprice": "430.15",
+        "closeprice": "430.50",
+        "totaltradedquantity": "63",
+        "turnover(inlakhs)": "68"
+    },
+    {
+        "date": "28-Dec-2018",
+        "symbol": "SUNPHARMA",
+        "series": "EQ",
+        "openprice": "415.00",
+        "highprice": "428.70",
+        "lowprice": "413.50",
+        "lasttradedprice": "425.00",
+        "closeprice": "425.20",
+        "totaltradedquantity": "1",
+        "turnover(inlakhs)": "28"
+    } 
   ];
  
   $scope.init=function(){
@@ -77,14 +139,20 @@ var myApp = angular.module('myApp', []);
    data[key].lowprice=value.lowprice.replace(',','');
    data[key].lasttradedprice=value.lasttradedprice.replace(',','');
    data[key].closeprice=value.closeprice.replace(',','');
-   $scope.hightlow.push(parseFloat(data[key].lowprice));
-   $scope.hightlow.push(parseFloat(data[key].highprice));
  }); 
- $scope.calculateIndicator(data);
-   console.log(data);
-   console.log($scope.hightlow); 
-   console.log(Math.min.apply(Math, $scope.hightlow)); 
-   console.log(Math.max.apply(Math, $scope.hightlow)); 
+ for(var l=0; l<$scope.symbolCollection.length; l++)
+ {
+     var filteredData=[];
+    angular.forEach(data, function(value, key) {
+        if($scope.symbolCollection[l]===value.symbol){
+            filteredData.push(value)
+            }
+      });
+      if(filteredData.length>0) {
+      $scope.calculateIndicator(filteredData);
+    }
+    filteredData=[];
+    }
   }
   $scope.calculateIndicator=function(data){
    var difference=[];
@@ -103,6 +171,8 @@ var myApp = angular.module('myApp', []);
       "percentageDifference":Math.round(Math.abs(data[key].closeprice-data[key].openprice))+"%",
       "roundPrice":Math.round(data[key].closeprice-data[key].openprice)
     };
+    $scope.hightlow.push(parseFloat(data[key].lowprice));
+    $scope.hightlow.push(parseFloat(data[key].highprice));
     if(ltp===0){
         ltp=data[key].lasttradedprice;
     }
@@ -123,8 +193,9 @@ var myApp = angular.module('myApp', []);
     "ltp":ltp,
     "data":difference
   }
-  $scope.result=[];
+
   $scope.result.push(resultObj);
+  $scope.hightlow=[];
   console.log("result",$scope.result);
   console.log("total",total);
     }
