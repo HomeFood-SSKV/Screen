@@ -5,12 +5,15 @@
     <style>
         table, th, td {
             border: 1px solid black;
+            text-align: center;
             }
-         .innerli {
+         .normalbar {
             float: left;
             list-style-type: none;
         }
-
+        .rangebar {
+            list-style-type: none;
+        }
         .outerli {
             list-style-type: none;
         }
@@ -18,16 +21,18 @@
         .positive {
             color: black;
             background-color: #00ff00;
+            border: 1px solid black;
         }
 
         .negative {
             color: black;
             background-color: #ff4c4c;
+            border: 1px solid black;
         }
         .nochange {
             color: black;
             background-color: hsl(246, 100%, 65%);
-            width: 5% !important;
+            border: 1px solid black;
         }
         </style>
   <title>Result</title>
@@ -37,60 +42,56 @@
 </head>
 
 <body ng-app="myApp" ng-controller="resultController">
-  <!-- <table>
-      <tr>
-           
-           <td>Symbol</td>
-          <td>week high</td>
-          <td>week low </td>
-          <td>total</td>
-          <td>Indication</td>
-        </tr>
-  <tr ng-repeat="x in result">
-      <td>{{x.symbol}}</td>
-      <td>{{x.weekhigh}}</td>
-      <td>{{x.weeklow}}</td>
-      <td>{{x.total}}</td>
-      <td>
-          <ul ng-style="{'width': x.percentageTotal}">
-              <li ng-repeat="col in x.data" ng-class-odd="'odd'" ng-class-even="'even'" ng-class="'innerli'" ng-style="{'width': col.percentageDifference}">
-                  {{col.roundPrice}}
-              </li>  
-          </ul>
-        </td>
-    </tr>
-  </table> -->
+    
+   Result Period: <select ng-model="corporateResultURL" 
+   ng-options="a for (a, b) in resultPeriod" ng-change="init('result');">
+        
+    </select>   
+    <b>OR</b>
+   Search Symbol: <input ng-model="searchSymbol" name="searchSymbol" 
+   placeholder="Comma seperated symbols" /> 
+   <button ng-click="init('plain');">
+        Search
+      </button>
+      <b>OR</b>
+   
+   Index/Sectors: <select ng-model="selectedIndexName" 
+   ng-options="x for (x, y) in indexList" ng-change="init('sector');">
+    </select>
+         
+   
+  <button ng-click="changeBar();" >
+    Change View
+  </button>
   <table style="width:100%">
         <tr>
           <th>Symbol</th>
           <th>Indication</th>
           <th>Last Traded Price</th>
-          <th>Week high</th>
           <th>Week Low</th> 
+          <th>Week high</th>
           <th>Fluctuation</th>
           <th>Week Gain/Loss</th>
-          <th>Signal</th>
+          <th>Last Day Trend</th>
           <th>Result Date</th>
         </tr>
         <tr ng-repeat="x in result ">
            <td width="10%">{{x.symbol}}</td> <!--  -->
-          <td width="30%"> <ul  style="width:100%">
-                <li ng-repeat="col in x.data | orderBy:'+':true"
-                 style=" float: left;
-                        list-style-type: none;" 
-                 ng-style="{'width': col.percentageDifference}"
-                 ng-class="{'positive': col.roundPrice >0 , 'negative': col.roundPrice<0,
-                 'nochange': col.roundPrice ==0 } ">
-                    {{col.roundPrice}}
+          <td width="30%"> <ul  style="width:100%; margin: 0;">
+                <li id="segment" ng-repeat="col in x.data | orderBy:'+':true"
+                ng-class="{'normalbar': isNormalBar=== true , 'rangebar': isNormalBar=== false } "
+                 ng-style="{'width': col.percentageDifference =='0%' ? '5%': col.percentageDifference}" >
+                    <div ng-class="{'positive': col.roundPrice >0 , 'negative': col.roundPrice<0,
+                        'nochange': col.roundPrice ==0 } ">{{col.roundPrice}}</div>
                 </li>  
             </ul></td>
           <td width="10%">{{x.ltp}}</td>
-          <td width="10%">{{x.weekhigh}}</td>
-          <td width="10%">{{x.weeklow}}</td>
+          <td width="10%">{{x.weeklow}}  ({{(x.ltp-x.weeklow).toFixed(2)}})</td>
+          <td width="10%">{{x.weekhigh}}  ({{(x.ltp-x.weekhigh).toFixed(2)}})</td>
           <td width="5%">{{x.fluctuation}}</td>
           <td width="5%">{{x.gainloss}}</td>
-          <td width="10%">NA</td>
-          <td width="10%">NA</td>
+          <td width="10%">{{x.recentTrend}}</td>
+          <td width="10%">{{x.resultDate}}</td>
         </tr> 
       </table>
       

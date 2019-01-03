@@ -3,7 +3,6 @@ var myApp = angular.module('myApp', []);
 
   myApp.controller('resultController', [ '$scope','$interval','$rootScope', '$http',
   function ($scope,$interval,$rootScope,$http) {
-    $scope.symbolCollection=['TCS','SUNPHARMA'];
     $scope.result=[];
      $scope.sampleData=[
       {
@@ -127,9 +126,119 @@ var myApp = angular.module('myApp', []);
         "turnover(inlakhs)": "28"
     } 
   ];
- 
-  $scope.init=function(){
-  $scope.removeComma($scope.sampleData);
+  // 
+  $scope.corporateResult=[
+    {
+        Symbol: "TCS",
+        CompanyName: "Tata Consultancy Services Limited",
+        ISIN: "INE467B01029",
+        Ind: "-",
+        Purpose: "Financial Results/Dividend",
+        BoardMeetingDate: "10-Jan-2019",
+        DisplayDate: "31-Dec-2018",
+        seqId: "103191378",
+        Details: "To consider and approve the financial results for the period ended December 31, 2018 and dividend"
+      },
+      {
+        Symbol: "SUNPHARMA",
+        CompanyName: "SUNPHARMA Limited",
+        ISIN: "INE009A01021",
+        Ind: "-",
+        Purpose: "Financial Results",
+        BoardMeetingDate: "15-Jan-2019",
+        DisplayDate: "14-Dec-2018",
+        seqId: "103150734",
+        Details: "To consider and approve the financial results for the period ended September 30, 2018"
+      }
+  ];
+  $scope.isNormalBar=true;
+  $scope.searchSymbol = '';
+  $scope.fromDate='';
+  $scope.toDate='';
+  var cors_api_url = 'http://pasivaraj.0fees.net/nse/nifty50.php';
+  var lastOneWeekURL="https://www.nseindia.com/corporates/corpInfo/equities/getResultCalendar.jsp?Symbol=&Industry=&Period=Last%201%20Week&Purpose=Results&symbol=&industry=&period=Last%201%20Week&purpose=Results";
+  var todayResultURL="https://www.nseindia.com/corporates/corpInfo/equities/getResultCalendar.jsp?Symbol=&Industry=&Period=Today&Purpose=Results&symbol=&industry=&period=Today&purpose=Results";
+  var nextWeekResultURL="https://www.nseindia.com/corporates/corpInfo/equities/getResultCalendar.jsp?Symbol=&Industry=&Period=Next%201%20Week&Purpose=Results&symbol=&industry=&period=Next%201%20Week&purpose=Results";
+  $scope.corporateResultURL="NA";
+  $scope.selectedIndexName="NAA";
+  $scope.resultPeriod = {
+    Select : "NA",
+    LastOneWeek : lastOneWeekURL,
+    Today:todayResultURL,
+    NextOneWeek : nextWeekResultURL
+};
+$scope.indexList={
+    Select : "NAA",
+    Nifty50 : "NA", // comma seperated symbols
+    NiftyNext50 : "NA",
+    NiftyMidCap50:"NA",
+    NiftyBank : "NA",
+    NiftyAuto : "NA",
+    NiftyFinance : "NA",
+    NiftyFMCG:"NA",
+    NiftyIT : "NA",
+    NiftyMedia : "NA",
+    NiftyMetal : "NA",
+    NiftyPharma:"NA",
+    NiftyPSUBank : "NA",
+    NiftyPvtBank:"NA",
+    NiftyRealty: "NA"
+};
+ $scope.changeBar=function(){
+     if($scope.isNormalBar===true){
+        $scope.isNormalBar=false;
+     } else if($scope.isNormalBar===false){   
+         $scope.isNormalBar=true;
+    }
+ } 
+  $scope.init=function(context){
+    $scope.result=[];
+    $scope.symbolCollection=[];
+    var corporateResultHeader ={ url: cors_api_url ,
+    method: "GET",
+    params: {urlpath:  $scope.corporateResultURL}};
+    // step 1 get corporate result collection
+    // $http(corporateResultHeader).then(function (corporateResponse) {
+    //    console.log("corporateResponse",corporateResponse);
+    // 	});
+
+    if(context=== 'result' && $scope.corporateResultURL!=='NA'){
+        $scope.searchSymbol ="";
+        $scope.selectedIndexName="NAA";
+        // $http(corporateResultHeader).then(function (corporateResponse) {
+    //    console.log("corporateResponse",corporateResponse);
+   //  $scope.corporateResult=corporateResponse;
+    angular.forEach($scope.corporateResult, function(value, key) {
+        $scope.symbolCollection.push(value.Symbol);
+    });
+    $scope.callHistoryData();
+    // 	});
+   
+    } else if(context=== 'plain' &&  $scope.searchSymbol !='') {
+    $scope.corporateResultURL="NA";
+    $scope.selectedIndexName="NAA";
+    var symbols=$scope.searchSymbol.split(',')
+    $scope.symbolCollection=symbols;
+    $scope.callHistoryData();
+    } 
+    else if(context=== 'sector' &&  $scope.selectedIndexName !='NAA') {
+        $scope.corporateResultURL="NA";
+        $scope.searchSymbol ="";
+        var symbols=$scope.searchSymbol.split(',')
+        $scope.symbolCollection=symbols;
+        $scope.callHistoryData();
+        } 
+  }
+  $scope.callHistoryData=function(){
+    var historyURL="asasafdfsdfgdfhdhdhgh"; // url for history 
+    var historyHeader ={ url: cors_api_url ,
+        method: "GET",
+        params: {urlpath:  historyURL}}; 
+        // $http(historyHeader).then(function (historyResponse) {
+            //    console.log("historyResponse",historyResponse);
+           //  $scope.sampleData=historyResponse;
+    $scope.removeComma($scope.sampleData);
+    // 	});
   }
   $scope.removeComma=function(data){
   $scope.hightlow = [];
@@ -144,7 +253,7 @@ var myApp = angular.module('myApp', []);
  {
      var filteredData=[];
     angular.forEach(data, function(value, key) {
-        if($scope.symbolCollection[l]===value.symbol){
+        if($scope.symbolCollection[l].toLowerCase()===value.symbol.toLowerCase()){
             filteredData.push(value)
             }
       });
@@ -152,7 +261,18 @@ var myApp = angular.module('myApp', []);
       $scope.calculateIndicator(filteredData);
     }
     filteredData=[];
-    }
+    } 
+    $scope.includeResultDate();
+  }
+  $scope.includeResultDate=function(){
+    for(var x=0; x<$scope.result.length; x++)
+    {
+       angular.forEach($scope.corporateResult, function(value, key) {
+           if($scope.result[x].symbol.toLowerCase()===value.Symbol.toLowerCase()){
+            $scope.result[x].resultDate=value.BoardMeetingDate;
+               }
+         });
+       }
   }
   $scope.calculateIndicator=function(data){
    var difference=[];
@@ -161,6 +281,7 @@ var myApp = angular.module('myApp', []);
     var fluctuation=0;
     var symbol='';
     var ltp=0;
+    var recentTrend='';
     angular.forEach(data, function(value, key) {
     var dataObj={
       "open":data[key].openprice,
@@ -175,6 +296,14 @@ var myApp = angular.module('myApp', []);
     $scope.hightlow.push(parseFloat(data[key].highprice));
     if(ltp===0){
         ltp=data[key].lasttradedprice;
+        var diff=Math.round(data[key].closeprice-data[key].openprice);
+        if(diff<0){
+            recentTrend="DOWN";
+        } else  if(diff>0){
+            recentTrend="UP";
+        }else  if(diff===0){
+            recentTrend="FLAT";
+        }
     }
     total=total+Math.abs(data[key].closeprice-data[key].openprice);
     gainloss=gainloss+(data[key].closeprice-data[key].openprice);
@@ -191,6 +320,8 @@ var myApp = angular.module('myApp', []);
     "gainloss":Math.round(gainloss),
     "fluctuation":Math.round(fluctuation),
     "ltp":ltp,
+    "recentTrend":recentTrend,
+    "resultDate":'',
     "data":difference
   }
 
@@ -199,5 +330,4 @@ var myApp = angular.module('myApp', []);
   console.log("result",$scope.result);
   console.log("total",total);
     }
-  $scope.init();
     }]);
