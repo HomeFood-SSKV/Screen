@@ -155,7 +155,8 @@ var myApp = angular.module('myApp', []);
   $scope.searchSymbol = '';
   $scope.fromDate='';
   $scope.toDate='';
-  var cors_api_url = '/nse/nifty50.php';
+  var cors_api_url = '/nse/corporate.php';
+  var cors_resultapi_url = '/nse/results.php';
   var lastOneWeekURL="https://www.nseindia.com/corporates/corpInfo/equities/getResultCalendar.jsp?Symbol=&Industry=&Period=Last%201%20Week&Purpose=Results&symbol=&industry=&period=Last%201%20Week&purpose=Results";
   var todayResultURL="https://www.nseindia.com/corporates/corpInfo/equities/getResultCalendar.jsp?Symbol=&Industry=&Period=Today&Purpose=Results&symbol=&industry=&period=Today&purpose=Results";
   var nextWeekResultURL="https://www.nseindia.com/corporates/corpInfo/equities/getResultCalendar.jsp?Symbol=&Industry=&Period=Next%201%20Week&Purpose=Results&symbol=&industry=&period=Next%201%20Week&purpose=Results";
@@ -209,7 +210,7 @@ $scope.indexList={
         $scope.selectedIndexName="NAA";
          $http(corporateResultHeader).then(function (corporateResponse) {
         console.log("corporateResponse",corporateResponse);
-   //  $scope.corporateResult=corporateResponse;
+    //  $scope.corporateResult=corporateResponse;
         angular.forEach($scope.corporateResult, function(value, key) {
             $scope.symbolCollection.push(value.Symbol);
         });
@@ -232,16 +233,16 @@ $scope.indexList={
         } 
   }
   $scope.callHistoryData=function(symbols){
-    var historyURL="asasafdfsdfgdfhdhdhgh"+symbols; // url for history 
+    var historyURL=symbols; // url for history 
     console.log("historyURL",historyURL);
-    var historyHeader ={ url: cors_api_url ,
+    var historyHeader ={ url: cors_resultapi_url ,
         method: "GET",
-        params: {urlpath:  historyURL}}; 
-        // $http(historyHeader).then(function (historyResponse) {
-            //    console.log("historyResponse",historyResponse);
-           //  $scope.sampleData=historyResponse;
-    $scope.removeComma($scope.sampleData);
-    // 	});
+        params: {symbol:  historyURL}}; 
+         $http(historyHeader).then(function (historyResponse) {
+                console.log("historyResponse",historyResponse);
+             $scope.sampleData=historyResponse;
+             $scope.removeComma($scope.sampleData);
+     	});
   }
   $scope.removeComma=function(data){
   $scope.hightlow = [];
