@@ -5,7 +5,7 @@ var myApp = angular.module('myApp', []);
   function ($scope,$interval,$rootScope,$http) {
     $scope.callInterval= 180000 ; // 180000 is 3 mins call
     $scope.TenMinscallInterval= 300000 ; // 300000 is 5 mins call  
-    var cors_api_url = 'http://pasivaraj.0fees.net/nse/nifty50.php';
+    var cors_api_url = '/nse/nifty50.php';
     $scope.theTime = new Date().toLocaleTimeString();
    var objHeader ={ url: cors_api_url ,
     method: "GET",

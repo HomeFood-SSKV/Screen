@@ -155,7 +155,7 @@ var myApp = angular.module('myApp', []);
   $scope.searchSymbol = '';
   $scope.fromDate='';
   $scope.toDate='';
-  var cors_api_url = 'http://pasivaraj.0fees.net/nse/nifty50.php';
+  var cors_api_url = '/nse/nifty50.php';
   var lastOneWeekURL="https://www.nseindia.com/corporates/corpInfo/equities/getResultCalendar.jsp?Symbol=&Industry=&Period=Last%201%20Week&Purpose=Results&symbol=&industry=&period=Last%201%20Week&purpose=Results";
   var todayResultURL="https://www.nseindia.com/corporates/corpInfo/equities/getResultCalendar.jsp?Symbol=&Industry=&Period=Today&Purpose=Results&symbol=&industry=&period=Today&purpose=Results";
   var nextWeekResultURL="https://www.nseindia.com/corporates/corpInfo/equities/getResultCalendar.jsp?Symbol=&Industry=&Period=Next%201%20Week&Purpose=Results&symbol=&industry=&period=Next%201%20Week&purpose=Results";
@@ -207,14 +207,14 @@ $scope.indexList={
     if(context=== 'result' && $scope.corporateResultURL!=='NA'){
         $scope.searchSymbol ="";
         $scope.selectedIndexName="NAA";
-        // $http(corporateResultHeader).then(function (corporateResponse) {
-    //    console.log("corporateResponse",corporateResponse);
+         $http(corporateResultHeader).then(function (corporateResponse) {
+        console.log("corporateResponse",corporateResponse);
    //  $scope.corporateResult=corporateResponse;
         angular.forEach($scope.corporateResult, function(value, key) {
             $scope.symbolCollection.push(value.Symbol);
         });
          $scope.callHistoryData($scope.symbolCollection.join());
-    // 	});
+     	});
    
     } else if(context=== 'plain' &&  $scope.searchSymbol !='') {
     $scope.corporateResultURL="NA";
