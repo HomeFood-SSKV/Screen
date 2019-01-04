@@ -169,20 +169,27 @@ var myApp = angular.module('myApp', []);
 };
 $scope.indexList={
     Select : "NAA",
-    Nifty50 : "NA", // comma seperated symbols
-    NiftyNext50 : "NA",
-    NiftyMidCap50:"NA",
-    NiftyBank : "NA",
-    NiftyAuto : "NA",
-    NiftyFinance : "NA",
-    NiftyFMCG:"NA",
-    NiftyIT : "NA",
-    NiftyMedia : "NA",
-    NiftyMetal : "NA",
-    NiftyPharma:"NA",
-    NiftyPSUBank : "NA",
-    NiftyPvtBank:"NA",
-    NiftyRealty: "NA"
+    Nifty50 : ["INFRATEL","TITAN","HCLTECH","ASIANPAINT",
+    "BAJAJ-AUTO","BHARTIARTL","BAJAJFINSV","HINDUNILVR","GAIL",
+    "INFY","YESBANK","WIPRO","CIPLA","KOTAKBANK","ITC","ICICIBANK",
+    "COALINDIA","HDFCBANK","BAJFINANCE","SBIN","POWERGRID","MARUTI",
+    "DRREDDY","ADANIPORTS","HEROMOTOCO","TCS","SUNPHARMA","INDUSINDBK",
+    "UPL","RELIANCE","TATAMOTORS","BPCL","AXISBANK","LT","NTPC","GRASIM",
+    "ZEEL","JSWSTEEL","HDFC","VEDL","TATASTEEL","HINDALCO","TECHM","M&M",
+    "ULTRACEMCO","IOC","IBULHSGFIN","ONGC","HINDPETRO","EICHERMOT"], 
+    NiftyNext50 : ["INFY","TCS","HDFC"],
+    NiftyMidCap50: ["INFY","TCS","HDFC"],
+    NiftyBank : ["INFY","TCS","HDFC"],
+    NiftyAuto : ["INFY","TCS","HDFC"],
+    NiftyFinance : ["INFY","TCS","HDFC"],
+    NiftyFMCG:["INFY","TCS","HDFC"],
+    NiftyIT : ["INFY","TCS","HDFC"],
+    NiftyMedia : ["INFY","TCS","HDFC"],
+    NiftyMetal : ["INFY","TCS","HDFC"],
+    NiftyPharma:["INFY","TCS","HDFC"],
+    NiftyPSUBank : ["INFY","TCS","HDFC"],
+    NiftyPvtBank:["INFY","TCS","HDFC"],
+    NiftyRealty: ["INFY","TCS","HDFC"]
 };
  $scope.changeBar=function(){
      if($scope.isNormalBar===true){
@@ -197,40 +204,36 @@ $scope.indexList={
     var corporateResultHeader ={ url: cors_api_url ,
     method: "GET",
     params: {urlpath:  $scope.corporateResultURL}};
-    // step 1 get corporate result collection
-    // $http(corporateResultHeader).then(function (corporateResponse) {
-    //    console.log("corporateResponse",corporateResponse);
-    // 	});
-
     if(context=== 'result' && $scope.corporateResultURL!=='NA'){
         $scope.searchSymbol ="";
         $scope.selectedIndexName="NAA";
         // $http(corporateResultHeader).then(function (corporateResponse) {
     //    console.log("corporateResponse",corporateResponse);
    //  $scope.corporateResult=corporateResponse;
-    angular.forEach($scope.corporateResult, function(value, key) {
-        $scope.symbolCollection.push(value.Symbol);
-    });
-    $scope.callHistoryData();
+        angular.forEach($scope.corporateResult, function(value, key) {
+            $scope.symbolCollection.push(value.Symbol);
+        });
+         $scope.callHistoryData($scope.symbolCollection.join());
     // 	});
    
     } else if(context=== 'plain' &&  $scope.searchSymbol !='') {
     $scope.corporateResultURL="NA";
     $scope.selectedIndexName="NAA";
-    var symbols=$scope.searchSymbol.split(',')
+    var symbols=$scope.searchSymbol.split(',');
     $scope.symbolCollection=symbols;
-    $scope.callHistoryData();
+    $scope.callHistoryData(symbols.join());
     } 
     else if(context=== 'sector' &&  $scope.selectedIndexName !='NAA') {
         $scope.corporateResultURL="NA";
         $scope.searchSymbol ="";
-        var symbols=$scope.searchSymbol.split(',')
+        var symbols=$scope.selectedIndexName;
         $scope.symbolCollection=symbols;
-        $scope.callHistoryData();
+        $scope.callHistoryData(symbols.join());
         } 
   }
-  $scope.callHistoryData=function(){
-    var historyURL="asasafdfsdfgdfhdhdhgh"; // url for history 
+  $scope.callHistoryData=function(symbols){
+    var historyURL="asasafdfsdfgdfhdhdhgh"+symbols; // url for history 
+    console.log("historyURL",historyURL);
     var historyHeader ={ url: cors_api_url ,
         method: "GET",
         params: {urlpath:  historyURL}}; 
