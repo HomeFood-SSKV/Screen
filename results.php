@@ -42,19 +42,24 @@ function buildHistoryData($data) {
  // create curl resource 
         $ch = curl_init(); 
         $symbol = explode(",", $_GET['symbol']);
+        $dateperiod = isset($_GET['period'])?$_GET['period']:'week';
         //$symbol = ["TCS", "INFY","RELIANCE"];
         foreach($symbol as $sval) {
-		$url = "https://www.nseindia.com/live_market/dynaContent/live_watch/get_quote/getHistoricalData.jsp?symbol={$sval}&series=EQ&fromDate=undefined&toDate=undefined&datePeriod=1month";
+		$url = "https://www.nseindia.com/live_market/dynaContent/live_watch/get_quote/getHistoricalData.jsp?symbol={$sval}&series=EQ&fromDate=undefined&toDate=undefined&datePeriod={$dateperiod}";
         // set url 
         curl_setopt($ch, CURLOPT_URL, $url ); 
 
         //return the transfer as a string 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
-
+        $finalData = [];    
         // $output contains the output string 
         $output = curl_exec($ch); 
-        $data = html_to_obj($output);
-        $finalData[$sval] = buildHistoryData($data["children"][0]["children"][2]["children"][0]["children"]);
+        if(trim($output) == 'No Record Found') {
+            //$finalData[$sval] = [];
+        } else {
+            $data = html_to_obj($output);
+            $finalData[$sval] = buildHistoryData($data["children"][0]["children"][2]["children"][0]["children"]);
+        }
         }
         curl_close($ch); 
         header("Content-Type: application/json");
