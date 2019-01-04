@@ -89,7 +89,7 @@ $scope.indexList={
         $scope.searchSymbol ="";
         $scope.selectedIndexName="NAA";
          $http(corporateResultHeader).then(function (corporateResponse) {
-        console.log("corporateResponse",corporateResponse);
+        console.log("corporateResponse",corporateResponse.data);
         $scope.corporateResult=corporateResponse.data;
         angular.forEach($scope.corporateResult, function(value, key) {
             $scope.symbolCollection.push(value.Symbol);
@@ -120,7 +120,7 @@ $scope.indexList={
         params: {symbol:  historyURL}}; 
          $http(historyHeader).then(function (historyResponse) {
                 console.log("historyResponse",historyResponse);
-                 $scope.sampleData=historyResponse;
+                 $scope.sampleData=historyResponse.data;
                 $scope.removeComma($scope.sampleData);
      	});
   }
