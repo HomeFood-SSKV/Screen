@@ -53,8 +53,12 @@ function buildHistoryData($data) {
 
         // $output contains the output string 
         $output = curl_exec($ch); 
-        $data = html_to_obj($output);
-        $finalData[$sval] = buildHistoryData($data["children"][0]["children"][2]["children"][0]["children"]);
+        if(trim($output) == 'No Record Found') {
+            $finalData[$sval] = [];
+        } else {
+            $data = html_to_obj($output);
+            $finalData[$sval] = buildHistoryData($data["children"][0]["children"][2]["children"][0]["children"]);
+        }
         }
         curl_close($ch); 
         header("Content-Type: application/json");
