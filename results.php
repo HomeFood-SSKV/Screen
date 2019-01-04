@@ -44,7 +44,7 @@ function buildHistoryData($data) {
         $symbol = explode(",", $_GET['symbol']);
         //$symbol = ["TCS", "INFY","RELIANCE"];
         foreach($symbol as $sval) {
-		$url = "https://www.nseindia.com/live_market/dynaContent/live_watch/get_quote/getHistoricalData.jsp?symbol={$sval}&series=EQ&fromDate=undefined&toDate=undefined&datePeriod=1month";
+		$url = "https://www.nseindia.com/live_market/dynaContent/live_watch/get_quote/getHistoricalData.jsp?symbol={$sval}&series=EQ&fromDate=undefined&toDate=undefined&datePeriod=week";
         // set url 
         curl_setopt($ch, CURLOPT_URL, $url ); 
 
