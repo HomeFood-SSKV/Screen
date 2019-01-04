@@ -50,11 +50,11 @@ function buildHistoryData($data) {
 
         //return the transfer as a string 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
-
+        $finalData = [];    
         // $output contains the output string 
         $output = curl_exec($ch); 
         if(trim($output) == 'No Record Found') {
-            $finalData[$sval] = [];
+            //$finalData[$sval] = [];
         } else {
             $data = html_to_obj($output);
             $finalData[$sval] = buildHistoryData($data["children"][0]["children"][2]["children"][0]["children"]);
