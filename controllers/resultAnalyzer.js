@@ -4,129 +4,219 @@ var myApp = angular.module('myApp', []);
   myApp.controller('resultController', [ '$scope','$interval','$rootScope', '$http',
   function ($scope,$interval,$rootScope,$http) {
     $scope.result=[];
-     $scope.sampleData=[
-      {
-          "date": "02-Jan-2019",
-          "symbol": "TCS",
-          "series": "EQ",
-          "openprice": "1,905.00",
-          "highprice": "1,934.45",
-          "lowprice": "1,900.00",
-          "lasttradedprice": "1919.00",
-          "closeprice": "1,923.30",
-          "totaltradedquantity": "2100463",
-          "turnover(inlakhs)": "40389.86"
-      },
-      {
-          "date": "01-Jan-2019",
-          "symbol": "TCS",
-          "series": "EQ",
-          "openprice": "1,896.00",
-          "highprice": "1,910.00",
-          "lowprice": "1,885.00",
-          "lasttradedprice": "1905.90",
-          "closeprice": "1,902.80",
-          "totaltradedquantity": "1094883",
-          "turnover(inlakhs)": "20800.34"
-      },
-      {
-          "date": "31-Dec-2018",
-          "symbol": "TCS",
-          "series": "EQ",
-          "openprice": "1908.00",
-          "highprice": "1909.00",
-          "lowprice": "1886.15",
-          "lasttradedprice": "1894.75",
-          "closeprice": "1893.05",
-          "totaltradedquantity": "1879740",
-          "turnover(inlakhs)": "35647.72"
-      },
-      {
-          "date": "28-Dec-2018",
-          "symbol": "TCS",
-          "series": "EQ",
-          "openprice": "1915.00",
-          "highprice": "1920.00",
-          "lowprice": "1893.00",
-          "lasttradedprice": "1897.00",
-          "closeprice": "1896.05",
-          "totaltradedquantity": "2239130",
-          "turnover(inlakhs)": "42708.38"
-      },
-      {
-          "date": "27-Dec-2018",
-          "symbol": "TCS",
-          "series": "EQ",
-          "openprice": "1909.00",
-          "highprice": "1941.70",
-          "lowprice": "1872.10",
-          "lasttradedprice": "1909.10",
-          "closeprice": "1908.95",
-          "totaltradedquantity": "4968201",
-          "turnover(inlakhs)": "95411.46"
-      },
-      {
-        "date": "03-Jan-2019",
-        "symbol": "SUNPHARMA",
-        "series": "EQ",
-        "openprice": "442.05",
-        "highprice": "443.60",
-        "lowprice": "434.00",
-        "lasttradedprice": "434.90",
-        "closeprice": "436.10",
-        "totaltradedquantity": "94",
-        "turnover(inlakhs)": "79"
-    },
-    {
-        "date": "02-Jan-2019",
-        "symbol": "SUNPHARMA",
-        "series": "EQ",
-        "openprice": "430.50",
-        "highprice": "441.20",
-        "lowprice": "429.25",
-        "lasttradedprice": "439.95",
-        "closeprice": "440.05",
-        "totaltradedquantity": "96",
-        "turnover(inlakhs)": "56"
-    },
-    {
-        "date": "01-Jan-2019",
-        "symbol": "SUNPHARMA",
-        "series": "EQ",
-        "openprice": "432.50",
-        "highprice": "438.80",
-        "lowprice": "429.65",
-        "lasttradedprice": "432.70",
-        "closeprice": "433.55",
-        "totaltradedquantity": "84",
-        "turnover(inlakhs)": "87"
-    },
-    {
-        "date": "31-Dec-2018",
-        "symbol": "SUNPHARMA",
-        "series": "EQ",
-        "openprice": "428.10",
-        "highprice": "432.30",
-        "lowprice": "425.50",
-        "lasttradedprice": "430.15",
-        "closeprice": "430.50",
-        "totaltradedquantity": "63",
-        "turnover(inlakhs)": "68"
-    },
-    {
-        "date": "28-Dec-2018",
-        "symbol": "SUNPHARMA",
-        "series": "EQ",
-        "openprice": "415.00",
-        "highprice": "428.70",
-        "lowprice": "413.50",
-        "lasttradedprice": "425.00",
-        "closeprice": "425.20",
-        "totaltradedquantity": "1",
-        "turnover(inlakhs)": "28"
-    } 
-  ];
-  // 
+     $scope.MockData={
+        "INFY": [
+          {
+            "Date": "04-Jan-2019",
+            "Symbol": "INFY",
+            "Series": "EQ",
+            "Open Price": "671.75",
+            "High Price": "673.90",
+            "Low Price": "651.00",
+            "Last Traded Price": "660.25",
+            "Close Price": "661.05",
+            "Total Traded Quantity": "78,89,310",
+            "Turnover (in Lakhs)": "52,083.05"
+          },
+          {
+            "Date": "03-Jan-2019",
+            "Symbol": "INFY",
+            "Series": "EQ",
+            "Open Price": "672.00",
+            "High Price": "677.00",
+            "Low Price": "663.10",
+            "Last Traded Price": "668.00",
+            "Close Price": "669.15",
+            "Total Traded Quantity": "68,27,249",
+            "Turnover (in Lakhs)": "45,719.29"
+          },
+          {
+            "Date": "02-Jan-2019",
+            "Symbol": "INFY",
+            "Series": "EQ",
+            "Open Price": "666.00",
+            "High Price": "674.00",
+            "Low Price": "662.05",
+            "Last Traded Price": "668.00",
+            "Close Price": "669.05",
+            "Total Traded Quantity": "74,16,655",
+            "Turnover (in Lakhs)": "49,689.63"
+          },
+          {
+            "Date": "01-Jan-2019",
+            "Symbol": "INFY",
+            "Series": "EQ",
+            "Open Price": "660.95",
+            "High Price": "666.30",
+            "Low Price": "654.15",
+            "Last Traded Price": "665.95",
+            "Close Price": "665.05",
+            "Total Traded Quantity": "29,43,390",
+            "Turnover (in Lakhs)": "19,445.79"
+          },
+          {
+            "Date": "31-Dec-2018",
+            "Symbol": "INFY",
+            "Series": "EQ",
+            "Open Price": "660.00",
+            "High Price": "662.00",
+            "Low Price": "655.80",
+            "Last Traded Price": "659.60",
+            "Close Price": "658.95",
+            "Total Traded Quantity": "33,73,319",
+            "Turnover (in Lakhs)": "22,239.20"
+          },
+          {
+            "Date": "28-Dec-2018",
+            "Symbol": "INFY",
+            "Series": "EQ",
+            "Open Price": "663.35",
+            "High Price": "663.50",
+            "Low Price": "653.30",
+            "Last Traded Price": "656.10",
+            "Close Price": "656.95",
+            "Total Traded Quantity": "47,36,598",
+            "Turnover (in Lakhs)": "31,180.77"
+          }
+        ],
+        "TCS": [
+          {
+            "Date": "04-Jan-2019",
+            "Symbol": "TCS",
+            "Series": "EQ",
+            "Open Price": "1,900.00",
+            "High Price": "1,901.20",
+            "Low Price": "1,841.00",
+            "Last Traded Price": "1882.00",
+            "Close Price": "1,876.85",
+            "Total Traded Quantity": "42,80,862",
+            "Turnover (in Lakhs)": "80,017.42"
+          },
+          {
+            "Date": "03-Jan-2019",
+            "Symbol": "TCS",
+            "Series": "EQ",
+            "Open Price": "1,919.00",
+            "High Price": "1,944.95",
+            "Low Price": "1,893.10",
+            "Last Traded Price": "1901.00",
+            "Close Price": "1,899.95",
+            "Total Traded Quantity": "26,11,668",
+            "Turnover (in Lakhs)": "50,061.78"
+          },
+          {
+            "Date": "02-Jan-2019",
+            "Symbol": "TCS",
+            "Series": "EQ",
+            "Open Price": "1,905.00",
+            "High Price": "1,934.45",
+            "Low Price": "1,900.00",
+            "Last Traded Price": "1919.00",
+            "Close Price": "1,923.30",
+            "Total Traded Quantity": "21,00,463",
+            "Turnover (in Lakhs)": "40,389.86"
+          },
+          {
+            "Date": "01-Jan-2019",
+            "Symbol": "TCS",
+            "Series": "EQ",
+            "Open Price": "1,896.00",
+            "High Price": "1,910.00",
+            "Low Price": "1,885.00",
+            "Last Traded Price": "1905.90",
+            "Close Price": "1,902.80",
+            "Total Traded Quantity": "10,94,883",
+            "Turnover (in Lakhs)": "20,800.34"
+          },
+          {
+            "Date": "31-Dec-2018",
+            "Symbol": "TCS",
+            "Series": "EQ",
+            "Open Price": "1,908.00",
+            "High Price": "1,909.00",
+            "Low Price": "1,886.15",
+            "Last Traded Price": "1894.75",
+            "Close Price": "1,893.05",
+            "Total Traded Quantity": "18,79,740",
+            "Turnover (in Lakhs)": "35,647.72"
+          }
+        ],
+        "HDFC": [
+          {
+            "Date": "04-Jan-2019",
+            "Symbol": "HDFC",
+            "Series": "EQ",
+            "Open Price": "1,948.00",
+            "High Price": "1,976.00",
+            "Low Price": "1,942.00",
+            "Last Traded Price": "1973.00",
+            "Close Price": "1,972.60",
+            "Total Traded Quantity": "21,09,614",
+            "Turnover (in Lakhs)": "41,298.67"
+          },
+          {
+            "Date": "03-Jan-2019",
+            "Symbol": "HDFC",
+            "Series": "EQ",
+            "Open Price": "1,984.05",
+            "High Price": "1,987.10",
+            "Low Price": "1,931.85",
+            "Last Traded Price": "1937.00",
+            "Close Price": "1,936.85",
+            "Total Traded Quantity": "37,32,193",
+            "Turnover (in Lakhs)": "72,787.76"
+          },
+          {
+            "Date": "02-Jan-2019",
+            "Symbol": "HDFC",
+            "Series": "EQ",
+            "Open Price": "2,004.70",
+            "High Price": "2,009.00",
+            "Low Price": "1,961.00",
+            "Last Traded Price": "1983.00",
+            "Close Price": "1,980.65",
+            "Total Traded Quantity": "20,01,170",
+            "Turnover (in Lakhs)": "39,704.83"
+          },
+          {
+            "Date": "01-Jan-2019",
+            "Symbol": "HDFC",
+            "Series": "EQ",
+            "Open Price": "1,968.00",
+            "High Price": "2,014.70",
+            "Low Price": "1,954.50",
+            "Last Traded Price": "2010.00",
+            "Close Price": "2,009.00",
+            "Total Traded Quantity": "13,05,443",
+            "Turnover (in Lakhs)": "25,985.79"
+          },
+          {
+            "Date": "31-Dec-2018",
+            "Symbol": "HDFC",
+            "Series": "EQ",
+            "Open Price": "1,988.00",
+            "High Price": "1,989.75",
+            "Low Price": "1,961.55",
+            "Last Traded Price": "1965.00",
+            "Close Price": "1,968.35",
+            "Total Traded Quantity": "22,89,993",
+            "Turnover (in Lakhs)": "45,137.44"
+          },
+          {
+            "Date": "28-Dec-2018",
+            "Symbol": "HDFC",
+            "Series": "EQ",
+            "Open Price": "1,959.00",
+            "High Price": "1,990.00",
+            "Low Price": "1,952.00",
+            "Last Traded Price": "1978.15",
+            "Close Price": "1,979.95",
+            "Total Traded Quantity": "23,84,400",
+            "Turnover (in Lakhs)": "47,251.01"
+          }
+        ]
+      };
+  $scope.sampleData= [];//$scope.MockData;
   $scope.corporateResult=[
     {
         Symbol: "TCS",
@@ -240,27 +330,31 @@ $scope.indexList={
         params: {symbol:  historyURL}}; 
          $http(historyHeader).then(function (historyResponse) {
                 console.log("historyResponse",historyResponse);
-             $scope.sampleData=historyResponse;
-             $scope.removeComma($scope.sampleData);
+                $scope.sampleData=historyResponse;
+                $scope.removeComma($scope.sampleData);
      	});
   }
-  $scope.removeComma=function(data){
+  $scope.removeComma=function(historyData){
   $scope.hightlow = [];
+  angular.forEach(historyData, function(data, key_symbol) {
   angular.forEach(data, function(value, key) {
-   data[key].openprice=value.openprice.replace(',','');
-   data[key].highprice=value.highprice.replace(',','');
-   data[key].lowprice=value.lowprice.replace(',','');
-   data[key].lasttradedprice=value.lasttradedprice.replace(',','');
-   data[key].closeprice=value.closeprice.replace(',','');
+   data[key]["Open Price"]=value["Open Price"].replace(',','');
+   data[key]["High Price"]=value["High Price"].replace(',','');
+   data[key]["Low Price"]=value["Low Price"].replace(',','');
+   data[key]["Last Traded Price"]=value["Last Traded Price"].replace(',','');
+   data[key]["Close Price"]=value["Close Price"].replace(',','');
  }); 
+}); 
  for(var l=0; l<$scope.symbolCollection.length; l++)
  {
      var filteredData=[];
-    angular.forEach(data, function(value, key) {
-        if($scope.symbolCollection[l].toLowerCase()===value.symbol.toLowerCase()){
+    angular.forEach(historyData, function(data, key_symbol) {
+      angular.forEach(data, function(value, key) {
+        if($scope.symbolCollection[l].toLowerCase()===value["Symbol"].toLowerCase()){
             filteredData.push(value)
             }
       });
+    });
       if(filteredData.length>0) {
       $scope.calculateIndicator(filteredData);
     }
@@ -288,19 +382,19 @@ $scope.indexList={
     var recentTrend='';
     angular.forEach(data, function(value, key) {
     var dataObj={
-      "open":data[key].openprice,
-      "close":data[key].closeprice,
-      "high":data[key].highprice,
-      "low":data[key].lowprice,
-      "difference":data[key].closeprice-data[key].openprice,
-      "percentageDifference":Math.round(Math.abs(data[key].closeprice-data[key].openprice))+"%",
-      "roundPrice":Math.round(data[key].closeprice-data[key].openprice)
+      "open":data[key]["Open Price"],
+      "close":data[key]["Close Price"],
+      "high":data[key]["High Price"],
+      "low":data[key]["Low Price"],
+      "difference":data[key]["Close Price"]-data[key]["Open Price"],
+      "percentageDifference":Math.round(Math.abs(data[key]["Close Price"]-data[key]["Open Price"]))+"%",
+      "roundPrice":Math.round(data[key]["Close Price"]-data[key]["Open Price"])
     };
-    $scope.hightlow.push(parseFloat(data[key].lowprice));
-    $scope.hightlow.push(parseFloat(data[key].highprice));
+    $scope.hightlow.push(parseFloat(data[key]["Low Price"]));
+    $scope.hightlow.push(parseFloat(data[key]["High Price"]));
     if(ltp===0){
-        ltp=data[key].lasttradedprice;
-        var diff=Math.round(data[key].closeprice-data[key].openprice);
+        ltp=data[key]["Last Traded Price"];
+        var diff=Math.round(data[key]["Close Price"]-data[key]["Open Price"]);
         if(diff<0){
             recentTrend="DOWN";
         } else  if(diff>0){
@@ -309,10 +403,10 @@ $scope.indexList={
             recentTrend="FLAT";
         }
     }
-    total=total+Math.abs(data[key].closeprice-data[key].openprice);
-    gainloss=gainloss+(data[key].closeprice-data[key].openprice);
+    total=total+Math.abs(data[key]["Close Price"]-data[key]["Open Price"]);
+    gainloss=gainloss+(data[key]["Close Price"]-data[key]["Open Price"]);
     fluctuation=Math.max.apply(Math, $scope.hightlow)-Math.min.apply(Math, $scope.hightlow);
-    symbol=data[key].symbol;
+    symbol=data[key]["Symbol"];
     difference.push(dataObj);
   }); 
   var resultObj={
