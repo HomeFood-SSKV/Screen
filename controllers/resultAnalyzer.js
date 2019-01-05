@@ -5,7 +5,7 @@ var myApp = angular.module('myApp', []);
   function ($scope,$interval,$rootScope,$http) {
     $scope.result=[];
      $scope.MockData={"INFY":[{"Date":"04-Jan-2019","Symbol":"INFY","Series":"EQ","Open Price":"671.75","High Price":"673.90","Low Price":"651.00","Last Traded Price":"660.25","Close Price":"661.05","Total Traded Quantity":"78,89,310","Turnover (in Lakhs)":"52,083.05"},{"Date":"03-Jan-2019","Symbol":"INFY","Series":"EQ","Open Price":"672.00","High Price":"677.00","Low Price":"663.10","Last Traded Price":"668.00","Close Price":"669.15","Total Traded Quantity":"68,27,249","Turnover (in Lakhs)":"45,719.29"},{"Date":"02-Jan-2019","Symbol":"INFY","Series":"EQ","Open Price":"666.00","High Price":"674.00","Low Price":"662.05","Last Traded Price":"668.00","Close Price":"669.05","Total Traded Quantity":"74,16,655","Turnover (in Lakhs)":"49,689.63"},{"Date":"01-Jan-2019","Symbol":"INFY","Series":"EQ","Open Price":"660.95","High Price":"666.30","Low Price":"654.15","Last Traded Price":"665.95","Close Price":"665.05","Total Traded Quantity":"29,43,390","Turnover (in Lakhs)":"19,445.79"},{"Date":"31-Dec-2018","Symbol":"INFY","Series":"EQ","Open Price":"660.00","High Price":"662.00","Low Price":"655.80","Last Traded Price":"659.60","Close Price":"658.95","Total Traded Quantity":"33,73,319","Turnover (in Lakhs)":"22,239.20"}],"TCS":[{"Date":"04-Jan-2019","Symbol":"TCS","Series":"EQ","Open Price":"1,900.00","High Price":"1,901.20","Low Price":"1,841.00","Last Traded Price":"1882.00","Close Price":"1,876.85","Total Traded Quantity":"42,80,862","Turnover (in Lakhs)":"80,017.42"},{"Date":"03-Jan-2019","Symbol":"TCS","Series":"EQ","Open Price":"1,919.00","High Price":"1,944.95","Low Price":"1,893.10","Last Traded Price":"1901.00","Close Price":"1,899.95","Total Traded Quantity":"26,11,668","Turnover (in Lakhs)":"50,061.78"},{"Date":"02-Jan-2019","Symbol":"TCS","Series":"EQ","Open Price":"1,905.00","High Price":"1,934.45","Low Price":"1,900.00","Last Traded Price":"1919.00","Close Price":"1,923.30","Total Traded Quantity":"21,00,463","Turnover (in Lakhs)":"40,389.86"},{"Date":"01-Jan-2019","Symbol":"TCS","Series":"EQ","Open Price":"1,896.00","High Price":"1,910.00","Low Price":"1,885.00","Last Traded Price":"1905.90","Close Price":"1,902.80","Total Traded Quantity":"10,94,883","Turnover (in Lakhs)":"20,800.34"},{"Date":"31-Dec-2018","Symbol":"TCS","Series":"EQ","Open Price":"1,908.00","High Price":"1,909.00","Low Price":"1,886.15","Last Traded Price":"1894.75","Close Price":"1,893.05","Total Traded Quantity":"18,79,740","Turnover (in Lakhs)":"35,647.72"}]};
-      $scope.sampleData=$scope.MockData;
+      $scope.sampleData= [];//$scope.MockData;
   $scope.corporateResult=[
     {
         Symbol: "TCS",
@@ -117,11 +117,11 @@ $scope.indexList={
     var historyHeader ={ url: cors_resultapi_url ,
         method: "GET",
         params: {symbol:  historyURL}}; 
-        // $http(historyHeader).then(function (historyResponse) {
-               // console.log("historyResponse",historyResponse);
-              //   $scope.sampleData=historyResponse.data;
+         $http(historyHeader).then(function (historyResponse) {
+                 console.log("historyResponse",historyResponse);
+                 $scope.sampleData=historyResponse.data;
                 $scope.removeComma($scope.sampleData);
-     	//});
+     	});
   }
   $scope.removeComma=function(historyData){
   $scope.hightlow = [];
