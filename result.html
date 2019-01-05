@@ -83,7 +83,7 @@
                  ng-style="{'width': (col.absDifference/x.onePercentage).toFixed(0) =='0' ? '5%': ((col.absDifference/x.onePercentage).toFixed(0)) + '%'}" >
                     <div ng-class="{'positive': col.roundPrice >0 , 'negative': col.roundPrice<0,
                         'nochange': col.roundPrice ==0 } ">
-                        {{((col.roundPrice).toFixed(1))}}
+                        {{((col.roundPrice).toFixed(0))}}
                     <!-- {{((col.roundPrice/col.openOnePercentage).toFixed(1))}}% -->
                     </div>
                 </li>  
