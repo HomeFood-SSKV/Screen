@@ -5,7 +5,7 @@ var myApp = angular.module('myApp', []);
   function ($scope,$interval,$rootScope,$http) {
     $scope.result=[];
      $scope.MockData={"INFY":[{"Date":"04-Jan-2019","Symbol":"INFY","Series":"EQ","Open Price":"671.75","High Price":"673.90","Low Price":"651.00","Last Traded Price":"660.25","Close Price":"661.05","Total Traded Quantity":"78,89,310","Turnover (in Lakhs)":"52,083.05"},{"Date":"03-Jan-2019","Symbol":"INFY","Series":"EQ","Open Price":"672.00","High Price":"677.00","Low Price":"663.10","Last Traded Price":"668.00","Close Price":"669.15","Total Traded Quantity":"68,27,249","Turnover (in Lakhs)":"45,719.29"},{"Date":"02-Jan-2019","Symbol":"INFY","Series":"EQ","Open Price":"666.00","High Price":"674.00","Low Price":"662.05","Last Traded Price":"668.00","Close Price":"669.05","Total Traded Quantity":"74,16,655","Turnover (in Lakhs)":"49,689.63"},{"Date":"01-Jan-2019","Symbol":"INFY","Series":"EQ","Open Price":"660.95","High Price":"666.30","Low Price":"654.15","Last Traded Price":"665.95","Close Price":"665.05","Total Traded Quantity":"29,43,390","Turnover (in Lakhs)":"19,445.79"},{"Date":"31-Dec-2018","Symbol":"INFY","Series":"EQ","Open Price":"660.00","High Price":"662.00","Low Price":"655.80","Last Traded Price":"659.60","Close Price":"658.95","Total Traded Quantity":"33,73,319","Turnover (in Lakhs)":"22,239.20"}],"TCS":[{"Date":"04-Jan-2019","Symbol":"TCS","Series":"EQ","Open Price":"1,900.00","High Price":"1,901.20","Low Price":"1,841.00","Last Traded Price":"1882.00","Close Price":"1,876.85","Total Traded Quantity":"42,80,862","Turnover (in Lakhs)":"80,017.42"},{"Date":"03-Jan-2019","Symbol":"TCS","Series":"EQ","Open Price":"1,919.00","High Price":"1,944.95","Low Price":"1,893.10","Last Traded Price":"1901.00","Close Price":"1,899.95","Total Traded Quantity":"26,11,668","Turnover (in Lakhs)":"50,061.78"},{"Date":"02-Jan-2019","Symbol":"TCS","Series":"EQ","Open Price":"1,905.00","High Price":"1,934.45","Low Price":"1,900.00","Last Traded Price":"1919.00","Close Price":"1,923.30","Total Traded Quantity":"21,00,463","Turnover (in Lakhs)":"40,389.86"},{"Date":"01-Jan-2019","Symbol":"TCS","Series":"EQ","Open Price":"1,896.00","High Price":"1,910.00","Low Price":"1,885.00","Last Traded Price":"1905.90","Close Price":"1,902.80","Total Traded Quantity":"10,94,883","Turnover (in Lakhs)":"20,800.34"},{"Date":"31-Dec-2018","Symbol":"TCS","Series":"EQ","Open Price":"1,908.00","High Price":"1,909.00","Low Price":"1,886.15","Last Traded Price":"1894.75","Close Price":"1,893.05","Total Traded Quantity":"18,79,740","Turnover (in Lakhs)":"35,647.72"}]};
-      $scope.sampleData= [];//$scope.MockData;
+      $scope.sampleData=[]; // $scope.MockData;
   $scope.corporateResult=[
     {
         Symbol: "TCS",
@@ -31,6 +31,7 @@ var myApp = angular.module('myApp', []);
       }
   ];
   $scope.isNormalBar=true;
+  $scope.isPriceView=true;
   $scope.searchSymbol = '';
   $scope.fromDate='';
   $scope.toDate='';
@@ -38,6 +39,7 @@ var myApp = angular.module('myApp', []);
   var cors_resultapi_url = '/nse/results.php';
   var lastOneWeekURL="https://www.nseindia.com/corporates/corpInfo/equities/getResultCalendar.jsp?Symbol=&Industry=&Period=Last%201%20Week&Purpose=Results&symbol=&industry=&period=Last%201%20Week&purpose=Results";
   var todayResultURL="https://www.nseindia.com/corporates/corpInfo/equities/getResultCalendar.jsp?Symbol=&Industry=&Period=Today&Purpose=Results&symbol=&industry=&period=Today&purpose=Results";
+  var tomorrowResultURL="https://www.nseindia.com/corporates/corpInfo/equities/getResultCalendar.jsp?Symbol=&Industry=&Period=Tomorrow&Purpose=Results&symbol=&industry=&period=Tomorrow&purpose=Results";
   var nextWeekResultURL="https://www.nseindia.com/corporates/corpInfo/equities/getResultCalendar.jsp?Symbol=&Industry=&Period=Next%201%20Week&Purpose=Results&symbol=&industry=&period=Next%201%20Week&purpose=Results";
   $scope.corporateResultURL="NA";
   $scope.selectedIndexName="NAA";
@@ -45,6 +47,7 @@ var myApp = angular.module('myApp', []);
     Select : "NA",
     LastOneWeek : lastOneWeekURL,
     Today:todayResultURL,
+    Tomorrow:tomorrowResultURL,
     NextOneWeek : nextWeekResultURL
 };
 $scope.indexList={
@@ -57,19 +60,48 @@ $scope.indexList={
     "UPL","RELIANCE","TATAMOTORS","BPCL","AXISBANK","LT","NTPC","GRASIM",
     "ZEEL","JSWSTEEL","HDFC","VEDL","TATASTEEL","HINDALCO","TECHM","MAHINDRA",
     "ULTRACEMCO","IOC","IBULHSGFIN","ONGC","HINDPETRO","EICHERMOT"], 
-    NiftyNext50 : ["INFY","TCS","HDFC"],
-    NiftyMidCap50: ["INFY","TCS","HDFC"],
-    NiftyBank : ["INFY","TCS","HDFC"],
-    NiftyAuto : ["INFY","TCS","HDFC"],
-    NiftyFinance : ["INFY","TCS","HDFC"],
-    NiftyFMCG:["INFY","TCS","HDFC"],
-    NiftyIT : ["INFY","TCS","HDFC"],
-    NiftyMedia : ["INFY","TCS","HDFC"],
-    NiftyMetal : ["INFY","TCS","HDFC"],
-    NiftyPharma:["INFY","TCS","HDFC"],
-    NiftyPSUBank : ["INFY","TCS","HDFC"],
-    NiftyPvtBank:["INFY","TCS","HDFC"],
-    NiftyRealty: ["INFY","TCS","HDFC"]
+    NiftyNext50 : ["AUROPHARMA","LUPIN","PGHH","L&TFH","SBILIFE","SAIL",
+    "SRTRANSFIN","BIOCON","ICICIPRULI","PETRONET","PEL","DLF","MOTHERSUMI",
+    "OIL","IDEA","BANKBARODA","COLPAL","SUNTV","GICRE","LICHSGFIN","HDFCLIFE",
+    "NHPC","CADILAHC","DMART","ABB","AMBUJACEM","NMDC","CONCOR","PIDILITIND",
+    "ACC","ICICIGI","INDIGO","NIACL","ABCAPITAL","ASHOKLEY","HINDZINC","BEL",
+    "OFSS","DABUR","MRF","BOSCHLTD","SIEMENS","SHREECEM","MARICO","BHEL",
+    "MCDOWELL-N","BRITANNIA","GODREJCP","HAVELLS","BANDHANBNK"],
+    NiftyMidCap50: ["UNIONBANK","PAGEIND","INDIANB","RPOWER","JINDALSTEL","CANBK",
+    "JUBLFOOD","IDBI","BANKINDIA","NBCC","PFC","BERGEPAINT","GMRINFRA","PNB","UBL",
+    "SRF","RECLTD","FEDERALBNK","CASTROLIND","DHFL","RAMCOCEM","CUMMINSIND",
+    "RELINFRA","MUTHOOTFIN","TATAPOWER","AMARAJABAT","GLENMARK","TATAGLOBAL",
+    "MRPL","CHOLAFIN","GODREJIND","TATACHEM","IDFCBANK","TVSMOTOR","VOLTAS",
+    "TORNTPHARM","EXIDEIND","AJANTPHARM","APOLLOTYRE","IGL","HEXAWARE","M&MFIN",
+    "BALKRISIND","RBLBANK","BHARATFORG","DIVISLAB","MINDTREE","NATIONALUM",
+    "APOLLOHOSP","DISHTV","BANDHANBNK"],
+    NiftyBank : ["ICICIBANK","SBIN","YESBANK","AXISBANK","PNB","INDUSINDBK",
+    "FEDERALBNK","BANKBARODA","IDFCBANK","HDFCBANK","RBLBANK","KOTAKBANK"],
+    NiftyAuto : ["TATAMOTORS","TATAMTRDVR","BAJAJ-AUTO","MARUTI","MOTHERSUMI",
+    "AMARAJABAT","HEROMOTOCO","EICHERMOT","TVSMOTOR","ASHOKLEY","EXIDEIND","MRF",
+    "M&M","APOLLOTYRE","BOSCHLTD","BHARATFORG"],
+    NiftyFinance : ["ICICIBANK","SBIN","AXISBANK","PFC","IBULHSGFIN","SRTRANSFIN",
+    "ICICIPRULI","RECLTD","BAJAJFINSV","HDFCLIFE","CHOLAFIN","BAJAJHLDNG","MFSL",
+    "IBVENTURES","HDFCBANK","HDFC","BAJFINANCE","EDELWEISS","M&MFIN","KOTAKBANK"],
+    NiftyFMCG:["JUBLFOOD","PGHH","UBL","EMAMILTD","ITC","COLPAL","TATAGLOBAL",
+    "GODREJIND","GSKCONS","DABUR","HINDUNILVR","MARICO","MCDOWELL-N","BRITANNIA",
+    "GODREJCP"],
+    NiftyIT : ["INFIBEAM","HCLTECH","TECHM","WIPRO","INFY","TCS","TATAELXSI",
+    "OFSS","NIITTECH","MINDTREE"],
+    NiftyMedia : ["PVR","DBCORP","EROSMEDIA","SUNTV","ZEEMEDIA","HATHWAY",
+    "NETWORK18","DEN","TV18BRDCST","JAGRAN","UFO","INOXLEISUR","TVTODAY",
+    "ZEEL","DISHTV"],
+    NiftyMetal : ["JINDALSTEL","SAIL","JSWSTEEL","VEDL","TATASTEEL",
+    "JSLHISAR","MOIL","APLAPOLLO","NMDC","HINDCOPPER","HINDZINC","COALINDIA",
+    "HINDALCO","NATIONALUM","WELCORP"],
+    NiftyPharma:["SUNPHARMA","AUROPHARMA","LUPIN","BIOCON","PEL","DRREDDY","GLENMARK",
+    "CADILAHC","CIPLA	","DIVISLAB"],
+    NiftyPSUBank : ["UNIONBANK","SYNDIBANK","INDIANB","ORIENTBANK","CANBK","SBIN",
+    "IDBI","BANKINDIA","CENTRALBK","PNB","VIJAYABANK","BANKBARODA"],
+    NiftyPvtBank:["ICICIBANK","YESBANK","AXISBANK","INDUSINDBK","FEDERALBNK",
+    "IDFCBANK","SOUTHBANK","HDFCBANK","RBLBANK","KOTAKBANK"],
+    NiftyRealty: ["GODREJPROP","DLF","SOBHA","BRIGADE","OBEROIRLTY",
+    "SUNTECK","PRESTIGE","IBREALEST","PHOENIXLTD","UNITECH"]
 };
  $scope.changeBar=function(){
      if($scope.isNormalBar===true){
@@ -78,6 +110,14 @@ $scope.indexList={
          $scope.isNormalBar=true;
     }
  } 
+ $scope.changePricePercentage=function(){
+    if($scope.isPriceView===true){
+       $scope.isPriceView=false;
+    } else if($scope.isPriceView===false){   
+        $scope.isPriceView=true;
+   }
+} 
+ 
   $scope.init=function(context){
     $scope.result=[];
     $scope.symbolCollection=[];
@@ -101,7 +141,7 @@ $scope.indexList={
     $scope.selectedIndexName="NAA";
     var symbols=$scope.searchSymbol.split(',');
     $scope.symbolCollection=symbols;
-    $scope.callHistoryData(symbols.join());
+    $scope.callHistoryData(symbols.join().toUpperCase());
     } 
     else if(context=== 'sector' &&  $scope.selectedIndexName !='NAA') {
         $scope.corporateResultURL="NA";

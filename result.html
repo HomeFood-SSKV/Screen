@@ -63,6 +63,9 @@
   <button ng-click="changeBar();" >
     Change View
   </button>
+  <button ng-click="changePricePercentage();" >
+    Switch Price/Percentage
+  </button>
   <table style="width:100%">
         <tr>
           <th>Symbol</th>
@@ -83,8 +86,8 @@
                  ng-style="{'width': (col.absDifference/x.onePercentage).toFixed(0) =='0' ? '5%': ((col.absDifference/x.onePercentage).toFixed(0)) + '%'}" >
                     <div ng-class="{'positive': col.roundPrice >0 , 'negative': col.roundPrice<0,
                         'nochange': col.roundPrice ==0 } ">
-                        {{((col.roundPrice).toFixed(0))}}
-                    <!-- {{((col.roundPrice/col.openOnePercentage).toFixed(1))}}% -->
+                       <span ng-if="isPriceView=== true" > {{((col.roundPrice).toFixed(0))}} </span>
+                       <span ng-if="isPriceView=== false"> {{((col.roundPrice/col.openOnePercentage).toFixed(1))}}% </span>
                     </div>
                 </li>  
             </ul></td>
