@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+
+<head>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+
+        }
+        
+        td, th {
+            border: 1px solid gray;
+            text-align: left;
+            padding: 2px;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+        .inline { 
+        display: inline-block;
+        }
+        .buy { 
+          background-color: #11aa3f;
+        }
+        .sell { 
+          background-color: #e71111;
+        }
+        .blank_row
+        {
+            height: 10px !important; /* overwrites any other rules */
+            background-color: #FFFFFF;
+        }
+        .bull {   
+          color:#11aa3f;
+        }
+        .bear {  
+          color: #e71111;
+        }
+        .flat {  
+          color: blue;
+        }
+        span{ 
+          font-weight: bold;
+        }
+        </style>
+  <title>Options</title>
+  <script src="libs/angular.min.js"></script>
+  <script src="controllers/Options.js"></script>
+ 
+</head>
+
+<body ng-app="myApp" ng-controller="OptionsController">
+    <table >
+        <tr>
+            <td style="font-weight:bold">I.Index Name</td>
+            <td style="font-weight:bold">% Change</td>
+            <td style="font-weight:bold">LTP</td>
+            <td style="font-weight:bold">Open</td>
+            <td style="font-weight:bold">High</td>
+            <td style="font-weight:bold">Low</td> 
+        </tr>
+        <tr>
+            <td>{{currentNiftyValues.indexName}}</td>
+            <td>{{currentNiftyValues.percChange}}</td>
+            <td>{{currentNiftyValues.last}}</td>
+            <td >{{currentNiftyValues.open}}</td>
+            <td >{{currentNiftyValues.high}}</td>
+            <td >{{currentNiftyValues.low}}</td>
+            <td></td>
+        </tr>
+        <td>{{currentIndiaVIXValues.indexName}}</td>
+        <td >{{currentIndiaVIXValues.percChange}}</td>
+        <td >{{currentIndiaVIXValues.last}}</td>
+        <td >{{currentIndiaVIXValues.open}}</td>
+        <td >{{currentIndiaVIXValues.high}}</td>
+        <td >{{currentIndiaVIXValues.low}}</td>
+        </table>
+        <table >
+            <tr>
+                <td style="font-weight:bold">II.Standard deviation</td>
+                <td style="font-weight:bold">SD1-Lower</td>
+                <td style="font-weight:bold">SD2-Lower</td>
+                <td style="font-weight:bold">SD1-Upper</td> 
+                <td style="font-weight:bold">SD2-Upper</td>
+                 
+            </tr>
+            <tr>
+                <td>{{sd}}</td>
+                <td>{{niftyRangeLowerSD1}}</td>
+                <td >{{niftyRangeLowerSD2}}</td>
+                <td>{{niftyRangeHigherSD1}}</td>
+                <td >{{niftyRangeHigherSD2}}</td>  
+                 
+            </tr>
+            
+            </table>
+            <table>
+                <tr>
+                    <td>Implied Volatality <input ng-model="Iv"></td>
+                    <td>Underlying  Value <input ng-model="Uv"></td>
+                    <td>Days <input ng-model="days"></td>
+                    <td><button ng-click="calculate();">Calculate</button></td>
+                     
+                </tr>
+                <tr>
+                    <td style="font-weight:bold">Standard deviation</td>
+                    <td style="font-weight:bold">SD1-Lower</td>
+                    <td style="font-weight:bold">SD2-Lower</td>
+                    <td style="font-weight:bold">SD1-Upper</td> 
+                    <td style="font-weight:bold">SD2-Upper</td>
+                </tr>
+                <tr>
+                    <td>{{calculated_sd}}</td>
+                    <td>{{calculatedRangeLowerSD1}}</td>
+                    <td >{{calculatedRangeLowerSD2}}</td>
+                    <td>{{calculatedRangeHigherSD1}}</td>
+                    <td >{{calculatedRangeHigherSD2}}</td> 
+                </tr>
+            </table>
+</body>
+         
+
+</html>
