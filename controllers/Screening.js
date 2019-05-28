@@ -12,10 +12,10 @@ var myApp = angular.module('myApp', []);
     params: {urlpath: "https://www.nseindia.com/live_market/dynaContent/live_watch/stock_watch/niftyStockWatch.json"}}
       
     $scope.majorStocks= ['ADANIPORTS','ASIANPAINT','HDFCBANK','RELIANCE','HDFC','INFY','ITC',
-  'TCS','ICICIBANK','KOTAKBANK','LT','HINDUNILVR'];
+  'TCS','ICICIBANK','KOTAKBANK','LT','AXISBANK'];
   $scope.majorStocksOrder= ['A-ADANIPORTS','B-ASIANPAINT','C-HDFCBANK',
   'D-RELIANCE','E-HDFC','F-INFY','G-ITC',
-  'H-TCS','I-ICICIBANK','J-KOTAKBANK','K-LT','L-HINDUNILVR'];
+  'H-TCS','I-ICICIBANK','J-KOTAKBANK','K-LT','L-AXISBANK'];
   $scope.majorUpCount=0;
   $scope.majorDownCount=0;
     // 6 mins init 
